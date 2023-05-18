@@ -1,7 +1,6 @@
 dash
 pandas
 numpy
-json
 io
 base64
 plotly.express
