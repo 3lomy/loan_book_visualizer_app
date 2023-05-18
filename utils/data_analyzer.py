@@ -188,7 +188,7 @@ dict_state_shortcode_to_name ={
     "BD" : "Brandenburg",
     "BE" : "Berlin",
     "BR" : "Bremen",
-    "BW" : "Baden-WÃ¼rttemberg",
+    "BW" : "Baden-Wuerttemberg",
     "HE" : "Hessen",
     "HH" : "Hamburg",
     "LS" : "Niedersachsen", 
@@ -199,7 +199,7 @@ dict_state_shortcode_to_name ={
     "SH" : "Schleswig-Holstein",
     "SR" : "Saarland",
     "SX" : "Sachsen",
-    "TH" : "ThÃ¼ringen"
+    "TH" : "Thueringen"
     }
 
 
