@@ -1,7 +1,5 @@
 dash
 pandas
 numpy
-io
-base64
 plotly.express
 plotly.graph_objects
