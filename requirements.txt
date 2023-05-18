@@ -5,4 +5,5 @@ gunicorn==19.7.1
 dash_bootstrap_components
 dash_bootstrap_templates
 openpyxl
+kaleido
 
