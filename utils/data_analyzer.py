@@ -338,6 +338,8 @@ def get_top_n_positions(df, num, y_axis_value):
         
         fig.layout.yaxis.tickformat = ',.1%'
         
+        fig.update_traces(marker_color='indianred')
+        
     return fig, ratio_of_top_loans_selected
 
 
@@ -357,6 +359,8 @@ def transform_data_by_year(df, feature, value):
         fig = px.bar(df_by_year, x=feature, y='Percentage')
         
         fig.layout.yaxis.tickformat = ',.1%'
+        
+        fig.update_traces(marker_color='indianred')
         
     else:
         fig = px.bar(df_by_year, x=feature, y='CurBankBal')
