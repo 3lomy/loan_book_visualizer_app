@@ -56,6 +56,8 @@ app = Dash(__name__, external_stylesheets=[dbc.themes.MORPH, FONT_AWESOME, dbc.i
 
 app.title = "Loan Book Visualizer"
 
+server = app.server
+
 # app = Dash(__name__, external_stylesheets=[dbc.themes.SLATE, FONT_AWESOME, dbc.icons.BOOTSTRAP])
 
 themes_options = [
