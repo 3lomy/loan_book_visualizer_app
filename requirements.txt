@@ -8,3 +8,4 @@ openpyxl
 kaleido
 plotly
 xlsxwriter
+dash_loading_spinners
