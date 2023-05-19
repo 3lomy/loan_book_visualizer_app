@@ -54,6 +54,8 @@ FONT_AWESOME = ("https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/f
 
 app = Dash(__name__, external_stylesheets=[dbc.themes.MORPH, FONT_AWESOME, dbc.icons.BOOTSTRAP])
 
+server = app.server
+
 # app = Dash(__name__, external_stylesheets=[dbc.themes.SLATE, FONT_AWESOME, dbc.icons.BOOTSTRAP])
 
 themes_options = [
