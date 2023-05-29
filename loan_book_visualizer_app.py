@@ -990,7 +990,7 @@ home_page_content = dbc.Container([
                 [
                     dbc.Card(
                        dcc.Upload(id='upload-data', children=html.Div(['Drag and Drop or ',html.A('Select Files')]),
-                                  style = red_button_style),
+                                  style = red_button_style, disabled=True),
                     )
                 ], width=6
             ),
