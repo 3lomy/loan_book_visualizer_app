@@ -64,7 +64,6 @@ server = app.server # required line before upload to render
 
 # app = Dash(__name__, external_stylesheets=[dbc.themes.SLATE, FONT_AWESOME, dbc.icons.BOOTSTRAP])
 
-             
 themes_options = [
     {"label": "Slate", "value": dbc.themes.SLATE},
     {"label": "Flatly", "value": dbc.themes.FLATLY},
@@ -222,6 +221,7 @@ seasoning_card = html.Div(
                 {"label": "12 months interval", "value": 12},
                 {"label": "24 months interval", "value": 24},
                 {"label": "36 months interval", "value": 36},
+                {"label": "48 months interval", "value": 48},],
             value=12,
             
             
@@ -2197,7 +2197,5 @@ def update_orig_term_table(jsonified_cleaned_data):
 
 if __name__ == '__main__':
     app.run_server(debug=False)
-
-
 
 
