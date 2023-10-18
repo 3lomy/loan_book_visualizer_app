@@ -54,9 +54,7 @@ FONT_AWESOME = ("https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/f
 
 # app = Dash(__name__, external_stylesheets=[dbc.themes.MORPH, FONT_AWESOME, dbc.icons.BOOTSTRAP])
 
-app = Dash(__name__,
-           external_stylesheets=[dbc.themes.BOOTSTRAP, FONT_AWESOME, dbc.icons.BOOTSTRAP],
-          meta_tags=[{'name': 'viewport', 'content': 'width=device-width, initial-scale=1,'}]) # maximum-scale=1.2, minimum-scale=0.5,'}])
+app = Dash(__name__, external_stylesheets=[dbc.themes.MORPH, FONT_AWESOME, dbc.icons.BOOTSTRAP])
 
 app.title = "Loan Book Visualizer"
 
