@@ -2,7 +2,7 @@
 # coding: utf-8
 
 # ### Author: Elom Kwamin, FRM
-# Date: 18.05.2023
+# Date: 20.09.2023
 
 # ### 0. importing required modules
 
@@ -54,13 +54,17 @@ FONT_AWESOME = ("https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/f
 
 # app = Dash(__name__, external_stylesheets=[dbc.themes.MORPH, FONT_AWESOME, dbc.icons.BOOTSTRAP])
 
-app = Dash(__name__, external_stylesheets=[dbc.themes.BOOTSTRAP, FONT_AWESOME, dbc.icons.BOOTSTRAP],
-          meta_tags=[{'name': 'viewport', 'content': 'width=device-width, initial-scale=1'}])
+app = Dash(__name__,
+           external_stylesheets=[dbc.themes.BOOTSTRAP, FONT_AWESOME, dbc.icons.BOOTSTRAP],
+          meta_tags=[{'name': 'viewport', 'content': 'width=device-width, initial-scale=1,'}]) # maximum-scale=1.2, minimum-scale=0.5,'}])
 
 app.title = "Loan Book Visualizer"
 
 server = app.server # required line before upload to render
 
+# app = Dash(__name__, external_stylesheets=[dbc.themes.SLATE, FONT_AWESOME, dbc.icons.BOOTSTRAP])
+
+                {"label": "48 months interval", "value": 48},],
 themes_options = [
     {"label": "Slate", "value": dbc.themes.SLATE},
     {"label": "Flatly", "value": dbc.themes.FLATLY},
@@ -72,6 +76,10 @@ themes_options = [
 ]
 
 theme_changer = ThemeChangerAIO(aio_id="theme",radio_props={ "value": dbc.themes.MORPH, "options": themes_options}, )
+
+
+# theme_switch = ThemeSwitchAIO(
+#     aio_id="theme", themes=[dbc.themes.MORPH, dbc.themes.SLATE])
 
 
 # ### 2. global variables declaration
@@ -104,55 +112,52 @@ CREATING CARDS FOR GRAPHS SHEET
 """
 # 1. original term card
 
-original_term_card = dbc.Card(
-    [
-        dbc.CardHeader("Original Term Strats"),
-        
+original_term_card = html.Div([
+
+        html.H5("Original Term Strats", className="m-0 text-center text-sm-left", style={"display": "inline"}),
+    
         dbc.RadioItems(
-           id="input-radio-selected-original-term",
-           options=[
-               {'label': 'EUR', 'value': 'Amount'},
-               {'label': '%', 'value': 'Percentage'},
-           ],
-           value='Amount',
-           inline=True,
+            id="input-radio-selected-original-term",
+            options=[
+                {'label': 'EUR', 'value': 'Amount'},
+                {'label': '%', 'value': 'Percentage'},
+            ],
+            value='Amount',
+            inline=True,
         ),
-        
-        
-        dcc.Dropdown(
-            
-            id="input-original-term-range",
-            options=[ 
-                {"label": "12 months interval", "value": 12},
-                {"label": "24 months interval", "value": 24},
-                {"label": "36 months interval", "value": 36},
-                {"label": "48 months interval", "value": 48},],
-            value=24,
-        ),      
-        
-        dls.Hash(
+
+           dcc.Dropdown(
+                id="input-original-term-range",
+                options=[ 
+                    {"label": "12 months interval", "value": 12},
+                    {"label": "24 months interval", "value": 24},
+                    {"label": "36 months interval", "value": 36},
+                    {"label": "48 months interval", "value": 48},
+                ],
+                value=24,
+            ),
+
         dcc.Graph(id="output-original-term-chart", figure={}, className="m-0"),
-            color="#435278",
-            speed_multiplier=2,
-            size=100,
-        ),
-        
-        dbc.CardFooter([
+    
             dbc.Row([
-                dbc.Col(html.P("Current balances distribution by original term"), 
-                width={"size": 12, "sm": 12, "md": 12, "lg": 5, "xl": 5})
+                html.H6("Current balances distribution by original term"),
             ]),
-                        
-        ])
-        
-    ]
-)    
+
+],style={"border": "0px ridge silver",  # outset, groove
+             'box-shadow': '10px 10px 10px 10px rgba(0, 0, 0, 0.2)',
+             'background':'light grey',
+             "padding": "10px"  }
+)
+
+
+
+
 
 # 2. remaining term card
 
-remaining_term_card = dbc.Card(
-    [
-        dbc.CardHeader("Remaining Term Strats"),
+remaining_term_card = html.Div([
+
+        html.H5("Remaining Term Strats", className="m-0 text-center text-sm-left", style={"display": "inline"}),
              
         dbc.RadioItems(
            id="input-radio-selected-remaining-term",
@@ -174,7 +179,7 @@ remaining_term_card = dbc.Card(
             value=24,
         ),
         
-        html.Br(), 
+#         html.Br(), 
         
         dls.Hash(
         dcc.Graph(id="output-remaining-term-chart", figure={}),
@@ -182,18 +187,23 @@ remaining_term_card = dbc.Card(
             speed_multiplier=2,
             size=100,
         ),
+    
+        dbc.Row([
+            html.H6("Current balances distribution by remaining term"),
+        ]),
         
-        dbc.CardFooter("Current balances distribution by remaining term"),
-        
-    ]
+    ],style={"border": "0px ridge silver",  # outset, groove
+             'box-shadow': '10px 10px 10px 10px rgba(0, 0, 0, 0.2)',
+             'background':'light grey',
+             "padding": "10px"  }
 )
 
 # 3. loan seasoning card
 
-seasoning_card = dbc.Card(
+seasoning_card = html.Div(
     [
 #         html.H6("Seasoning Strats", className="mb-2"),
-        dbc.CardHeader("Season Strats"),
+        html.H5("Season Strats"),
         
         dbc.RadioItems(
            id="input-radio-selected-seasoning",
@@ -212,7 +222,6 @@ seasoning_card = dbc.Card(
                 {"label": "12 months interval", "value": 12},
                 {"label": "24 months interval", "value": 24},
                 {"label": "36 months interval", "value": 36},
-                {"label": "48 months interval", "value": 48},],
             value=12,
             
             
@@ -227,17 +236,23 @@ seasoning_card = dbc.Card(
             size=100,
         ),
         
-        dbc.CardFooter("Current balances distribution by seasoning"),
+         dbc.Row([
+            html.H6("Current balances distribution by seasoning"),
+        ]),
         
-    ]
+    ],style={"border": "0px ridge silver",  # outset, groove
+             'box-shadow': '10px 10px 10px 10px rgba(0, 0, 0, 0.2)',
+             'background':'light grey',
+             "padding": "10px"  }
 )
     
     
 # 4. current coupon card
 
-current_coupon_card = dbc.Card(
+current_coupon_card = html.Div(
     [
-        dbc.CardHeader("Coupon Strats"),
+#         dbc.CardHeader("Coupon Strats"),
+        html.H5("Coupon Strats"),
         
         dbc.RadioItems(
            id="input-radio-selected-coupon",
@@ -270,16 +285,26 @@ current_coupon_card = dbc.Card(
             size=100,
         ),
         
-        dbc.CardFooter("Current balances distribution by coupon"),
+        dbc.Row([
+            html.H6("Current balances distribution by coupon"),
+        ]),
         
-    ]
+#         dbc.CardFooter("Current balances distribution by coupon"),
+        
+    ],style={"border": "0px ridge silver",  # outset, groove
+             'box-shadow': '10px 10px 10px 10px rgba(0, 0, 0, 0.2)',
+             'background':'light grey',
+             "padding": "10px"  }
 )    
+
+
 
 # 5. spread to index card
 
-spread_card = dbc.Card(
+spread_card = html.Div(
     [
-        dbc.CardHeader("Spread to Index Strats"),
+#         dbc.CardHeader("Spread to Index Strats"),
+        html.H5("Spread to Index Strats"),
         
         dbc.RadioItems(
            id="input-radio-selected-spread",
@@ -311,17 +336,25 @@ spread_card = dbc.Card(
             size=100,
         ),
         
-        dbc.CardFooter("Current balances distribution by spread"),
+        dbc.Row([
+            html.H6("Current balances distribution by spread"),
+        ]),
         
-    ]
+#         dbc.CardFooter("Current balances distribution by spread"),
+        
+    ],style={"border": "0px ridge silver",  # outset, groove
+             'box-shadow': '10px 10px 10px 10px rgba(0, 0, 0, 0.2)',
+             'background':'light grey',
+             "padding": "10px"  }
 ) 
 
 
 # 6. LTV card
 
-ltv_card = dbc.Card(
+ltv_card = html.Div(
     [
-        dbc.CardHeader("Loan to Value Strats"),
+#         dbc.CardHeader("Loan to Value Strats"),
+        html.H5("Loan to Value Strats"),
         
         dbc.RadioItems(
            id="input-radio-selected-ltv",
@@ -355,16 +388,25 @@ ltv_card = dbc.Card(
             size=100,
         ),
         
-        dbc.CardFooter("Current balances distribution by LTV"),
+        dbc.Row([
+            html.H6("Current balances distribution by LTV"),
+        ]),
         
-    ]
+        
+#         dbc.CardFooter("Current balances distribution by LTV"),
+        
+    ],style={"border": "0px ridge silver",  # outset, groove
+             'box-shadow': '10px 10px 10px 10px rgba(0, 0, 0, 0.2)',
+             'background':'light grey',
+             "padding": "10px"  }
 ) 
 
 # 7. original balance card
 
-original_balance_card = dbc.Card(
+original_balance_card = html.Div(
     [
-        dbc.CardHeader("Original Balance Strats"),
+#         dbc.CardHeader("Original Balance Strats"),
+        html.H5("Original Balance Strats"),
         
         dbc.RadioItems(
            id="input-radio-selected-original-balance",
@@ -396,16 +438,26 @@ original_balance_card = dbc.Card(
             size=100,
         ),
         
-        dbc.CardFooter("Current balances distribution by original balance"),
+        dbc.Row([
+            html.H6("Current balances distribution by original balance"),
+        ]),
         
-    ]
+#         dbc.CardFooter("Current balances distribution by original balance"),
+        
+    ],style={"border": "0px ridge silver",  # outset, groove
+             'box-shadow': '10px 10px 10px 10px rgba(0, 0, 0, 0.2)',
+             'background':'light grey',
+             "padding": "10px"  }
 ) 
+
+
 
 # 8. current balance card
 
-current_balance_card = dbc.Card(
+current_balance_card = html.Div(
     [
-        dbc.CardHeader("Current Balance Strats"),
+#         dbc.CardHeader("Current Balance Strats"),
+        html.H5("Current Balance Strats"),
         
         dbc.RadioItems(
            id="input-radio-selected-current-balance",
@@ -437,17 +489,21 @@ current_balance_card = dbc.Card(
             size=100,
         ),
         
-        dbc.CardFooter("Current balances distribution by current balance"),
+        dbc.Row([
+            html.H6("Current balances distribution by current balance"),
+        ]),
         
-    ]
+    ],style={"border": "0px ridge silver",  # outset, groove
+             'box-shadow': '10px 10px 10px 10px rgba(0, 0, 0, 0.2)',
+             'background':'light grey',
+             "padding": "10px"  }
 ) 
 
 # 9. Region card
 
-region_card = dbc.Card(
-    [
-#         html.H6("State Strats", className="card-title"),
-        dbc.CardHeader("State Strats"),
+region_card = html.Div([
+
+        html.H5("State Strats"),
         
         dbc.RadioItems(
            id="input-radio-selected-region",
@@ -480,15 +536,23 @@ region_card = dbc.Card(
             size=100,
         ),
         
-        dbc.CardFooter("Current balances distribution by state"),  
-    ]
+        dbc.Row([
+            html.H6("Current balances distribution by state"),
+        ]),
+  
+    ],style={"border": "0px ridge silver",  # outset, groove
+             'box-shadow': '10px 10px 10px 10px rgba(0, 0, 0, 0.2)',
+             'background':'light grey',
+             "padding": "10px"  }
 ) 
+    
+    
     
 # 10. Top loans card
 
-top_loans_card = dbc.Card(
-    [
-        dbc.CardHeader("Top loans Strats"),
+top_loans_card = html.Div([
+        
+        html.H5("Top loans Strats"),
         
         dbc.RadioItems(
            id="input-radio-selected-top-loans",
@@ -522,15 +586,24 @@ top_loans_card = dbc.Card(
         
         html.P(id="output-top-loans-info"),
         
-        dbc.CardFooter("Current balances distribution by top loans"), 
-    ]
+        dbc.Row([
+            html.H6("Current balances distribution by top loans"),
+        ]),
+        
+#         dbc.CardFooter("Current balances distribution by top loans"), 
+    ],style={"border": "0px ridge silver",  # outset, groove
+             'box-shadow': '10px 10px 10px 10px rgba(0, 0, 0, 0.2)',
+             'background':'light grey',
+             "padding": "10px"  }
 )             
+
+
 
 # 11. Origination Year
 
-origination_year_card = dbc.Card(
-    [        
-        dbc.CardHeader("Origination Year Strats"),
+origination_year_card = html.Div([        
+        
+        html.H5("Origination Year Strats"),
         
         dbc.RadioItems(
            id="input-radio-selected-origination-year",
@@ -551,15 +624,22 @@ origination_year_card = dbc.Card(
             size=100,
         ),
         
-        dbc.CardFooter("Current balances distribution by origination year"),  
-    ]
+        dbc.Row([
+            html.H6("Current balances distribution by origination year"),
+        ]),
+        
+    ],style={"border": "0px ridge silver",  # outset, groove
+             'box-shadow': '10px 10px 10px 10px rgba(0, 0, 0, 0.2)',
+             'background':'light grey',
+             "padding": "10px"  }
 ) 
+
 
 # 12. Maturity Year
 
-maturity_year_card = dbc.Card(
-    [       
-        dbc.CardHeader("Maturity Year Strats"),
+maturity_year_card = html.Div([       
+
+        html.H5("Maturity Year Strats"),
         
         dbc.RadioItems(
            id="input-radio-selected-maturity-year",
@@ -580,8 +660,14 @@ maturity_year_card = dbc.Card(
             size=100,
         ),
         
-        dbc.CardFooter("Current balances distribution by maturity year"),
-    ]
+        dbc.Row([
+            html.H6("Current balances distribution by maturity year"),
+        ]),       
+        
+    ],style={"border": "0px ridge silver",  # outset, groove
+             'box-shadow': '10px 10px 10px 10px rgba(0, 0, 0, 0.2)',
+             'background':'light grey',
+             "padding": "10px"  }
 ) 
 
 
@@ -612,17 +698,22 @@ remaining_term_table = html.Div([
                         {"label": "48 months interval", "value": 48},],
                     value=24,
                     ), 
-            ]), xs=12, sm=12, md=12, lg=5, xl=5),
+            ]),width=3, xs=12, sm=12, lg=3),
     ],
     justify = "left"),   
     
     dls.Roller(
-    html.Div(id='remaining-term-table-placeholder'),
+    html.Div(id='remaining-term-table-placeholder', style={"overflow": "scroll"}),
         color="#435278",
         width=100,
     ),
 
-])
+],style={"border": "0px ridge silver",  # outset, groove
+             'box-shadow': '10px 10px 10px 10px rgba(0, 0, 0, 0.2)',
+             'background':'light grey',
+             "padding": "10px"  }
+
+)
 
 original_term_table = html.Div([
     
@@ -641,17 +732,22 @@ original_term_table = html.Div([
                         {"label": "48 months interval", "value": 48},],
                     value=24,
                     ), 
-            ]), xs=12, sm=12, md=12, lg=5, xl=5),
+            ]),width=3, xs=12, sm=12, lg=3),
     ],
     justify = "left"),   
     
     dls.Roller(
-    html.Div(id='original-term-table-placeholder'), 
+    html.Div(id='original-term-table-placeholder', style={"overflow": "scroll"}), 
         color="#435278",
         width=100,
     ),
     
-],)
+],style={"border": "0px ridge silver",  # outset, groove
+             'box-shadow': '10px 10px 10px 10px rgba(0, 0, 0, 0.2)',
+             'background':'light grey',
+             "padding": "10px"  }
+
+)
 
 seasoning_term_table = html.Div([
     
@@ -670,17 +766,21 @@ seasoning_term_table = html.Div([
                         {"label": "48 months interval", "value": 48},],
                     value=12,
                     ), 
-            ]),width=3, lg=3),
+            ]),width=3, xs=12, sm=12, lg=3),
     ],
     justify = "left"),   
     
     dls.Roller(
-    html.Div(id='seasoning-table-placeholder'), 
+    html.Div(id='seasoning-table-placeholder', style={"overflow": "scroll"}), 
         color="#435278",
         width=100,
     ),
     
-],)
+],style={"border": "0px ridge silver",  # outset, groove
+             'box-shadow': '10px 10px 10px 10px rgba(0, 0, 0, 0.2)',
+             'background':'light grey',
+             "padding": "10px"  }
+)
 
 coupon_term_table = html.Div([
     
@@ -700,17 +800,21 @@ coupon_term_table = html.Div([
                     ],
                     value=0.025,
                     ), 
-            ]),width=3, lg=3),
+            ]),width=3, xs=12, sm=12, lg=3),
     ],
     justify = "left"),   
     
     dls.Roller(
-    html.Div(id='coupon-table-placeholder'),  
+    html.Div(id='coupon-table-placeholder', style={"overflow": "scroll"}),  
         color="#435278",
         width=100,
     ),
     
-],)
+],style={"border": "0px ridge silver",  # outset, groove
+             'box-shadow': '10px 10px 10px 10px rgba(0, 0, 0, 0.2)',
+             'background':'light grey',
+             "padding": "10px"  }
+)
 
 spread_term_table = html.Div([
     
@@ -730,17 +834,21 @@ spread_term_table = html.Div([
                     ],
                     value=.005,
                     ), 
-            ]),width=3, lg=3),
+            ]),width=3, xs=12, sm=12, lg=3),
     ],
     justify = "left"),   
     
     dls.Roller(
-    html.Div(id='spread-table-placeholder'),
+    html.Div(id='spread-table-placeholder', style={"overflow": "scroll"}),
         color="#435278",
         width=100,
     ),
     
-],)
+],style={"border": "0px ridge silver",  # outset, groove
+             'box-shadow': '10px 10px 10px 10px rgba(0, 0, 0, 0.2)',
+             'background':'light grey',
+             "padding": "10px"  }
+)
 
 ltv_term_table = html.Div([
     
@@ -762,17 +870,21 @@ ltv_term_table = html.Div([
                     ],
                     value=.15,
                     ), 
-            ]),width=3, lg=3),
+            ]),width=3, xs=12, sm=12, lg=3),
     ],
     justify = "left"), 
     
     dls.Roller(
-    html.Div(id='ltv-table-placeholder'),
+    html.Div(id='ltv-table-placeholder', style={"overflow": "scroll"}),
         color="#435278",
         width=100,
     ),
     
-],)
+],style={"border": "0px ridge silver",  # outset, groove
+             'box-shadow': '10px 10px 10px 10px rgba(0, 0, 0, 0.2)',
+             'background':'light grey',
+             "padding": "10px"  }
+)
 
 original_balance_term_table = html.Div([
     
@@ -792,17 +904,21 @@ original_balance_term_table = html.Div([
                     ],
                     value=100000,
                 ), 
-            ]),width=3, lg=3),
+            ]),width=3, xs=12, sm=12, lg=3),
         ],
         justify = "left"), 
     
     dls.Roller(
-    html.Div(id='original-balance-table-placeholder'),
+    html.Div(id='original-balance-table-placeholder', style={"overflow": "scroll"}),
         color="#435278",
         width=100,
     ),
     
-],)
+],style={"border": "0px ridge silver",  # outset, groove
+             'box-shadow': '10px 10px 10px 10px rgba(0, 0, 0, 0.2)',
+             'background':'light grey',
+             "padding": "10px"  }
+)
 
 current_balance_term_table = html.Div([
     
@@ -822,17 +938,21 @@ current_balance_term_table = html.Div([
                     ],
                     value=100000,
                 ), 
-            ]),width=3, lg=3),
+            ]),width=3, xs=12, sm=12, lg=3),
     ],
     justify = "left"), 
     
     dls.Roller(
-    html.Div(id='current-balance-table-placeholder'),
+    html.Div(id='current-balance-table-placeholder', style={"overflow": "scroll"}),
         color="#435278",
         width=100,
     ),
     
-],)
+],style={"border": "0px ridge silver",  # outset, groove
+             'box-shadow': '10px 10px 10px 10px rgba(0, 0, 0, 0.2)',
+             'background':'light grey',
+             "padding": "10px"  }
+)
 
 
 # #### 3.3 creating the side bar
@@ -842,21 +962,23 @@ current_balance_term_table = html.Div([
 
 # the style arguments for the sidebar. We use position:fixed and a fixed width
 SIDEBAR_STYLE = {
-    "position": "fixed",
-    "top": 0,
-    "left": 0,
-    "bottom": 0,
-    "width": "25rem",
-    "padding": "0rem 2rem",
-    "background-color": "#f8f9fa",
+    "margin-top":"10px",
+    "margin-bottom":"10px",
+    "margin-left":"10px",
+    "margin-right":"10px",
+#     "text-align":"center",
 }
 
 # the styles for the main content position it to the right of the sidebar and
 # add some padding.
+
+
 CONTENT_STYLE = {
-    "margin-left": "25rem",
-    "margin-right": "2rem",
-    "padding": "1rem 1rem",
+    #"position": "fixed",
+#     "margin-top":"5rem",
+#     "margin-left": "5rem",
+#     "margin-right": "5rem",
+    "padding": "2rem 2rem",
 }
 
 sidebar = html.Div(
@@ -872,17 +994,22 @@ sidebar = html.Div(
                     dbc.NavLink("Home", href="/", active="exact"),
                     dbc.NavLink("Charts", href="/charts-page", active="exact"),
                     dbc.NavLink("Tables", href="/tables-page", active="exact"),
+                    
+#                     dbc.NavLink("Home", href="/", active="exact"),
+#                     dbc.NavLink("Graphs", href="/page-1", active="exact"),
+#                     dbc.NavLink("Tables", href="/page-2", active="exact"),
                 ],
                 vertical=True,
                 pills=True,
                 ),
                 
-            ], width=12),
+             ], width=12), #xs=3, sm=3, md=3, lg=12, xl=12),
             
-        ]), 
-        
+        ]),
+
         html.Hr(),
     ],
+    
     style=SIDEBAR_STYLE,
 )
 
@@ -916,61 +1043,31 @@ red_button_style = {'background-color': 'indianred',
                     'margin': '10px',
                    }
 
-contact_style = {'font-size': '18px',
-                'color': '#666666',
-                'margin-top': '10px',
-                'display': 'flex',
-                'align-items': 'center',  # Aligns the logo and text vertically
-                'justify-content': 'center'  # Centers the text horizontally
-                }
+contact_style = {
+    'margin-right': '5px',
+    'font-size': '18px',
+    'color': '#666666',
+    'margin-top': '10px',
+    'display': 'flex',
+    'align-items': 'center',  # Aligns the logo and text vertically
+    'justify-content': 'center'  # Centers the text horizontally
+}
 
-header_style = {'background': 'linear-gradient(to right, #b0c4de, #1e90ff)',
-                'padding': '20px 15px',  # Increased padding for top and bottom, decreased for left and right
-                'text-align': 'center',
-                'font-size': '40px',
-                'font-weight': 'bold',
-                'color': '#333333',
-                'box-shadow': '0 8px 12px rgba(0, 0, 0, 0.2)',
-                'font-family': 'Goudy Old Style, sans-serif'  # Custom font
-                }
+
+header_style = {
+    'background': 'linear-gradient(to right, #b0c4de, #1e90ff)',
+    'padding': '20px 15px',  # Increased padding for top and bottom, decreased for left and right
+    'text-align': 'center',
+    'font-size': '40px',
+    'font-weight': 'bold',
+    'color': '#333333',
+    'box-shadow': '0 8px 12px rgba(0, 0, 0, 0.2)',
+    'font-family': 'Goudy Old Style, sans-serif'  # Custom font
+}
 
 
 home_page_content = dbc.Container([ 
-    
-        html.Hr(),
-        dbc.Row([
-            html.Header(
-            children=[
-                dbc.Container(
-                    children=[
-                        html.H1('LOAN BOOK VISUALIZER', style=header_style),
-                        html.Div(children = [
-                               html.A(
-                                        children=[
-                                            html.I(className='bi bi-linkedin text-info me-1'),  # LinkedIn icon
-                                            'Elom Kwamin'
-                                        ],
-                                        href='https://www.linkedin.com/in/elom-tettey-kwamin-frm®-53029468',
-                                        target='_blank',
-                                        style=contact_style
-                                    ),
-                                html.A(
-                                        children=[
-                                            html.I(className="bi bi-envelope-fill text-info me-0"), 
-                                            ' et.kwamin@gmail.com'
-                                        ],
-                                        style=contact_style
-                                    ),
-                        ], style={'margin-top': '10px', 'display': 'flex', 'flex-direction': 'column'}),
-                    ]
-                )
-            ]
-        ),
-
-         ],
-        justify = "center"
-        ),
-    
+        
         html.Hr(),
 
         dbc.Row([
@@ -980,19 +1077,22 @@ home_page_content = dbc.Container([
         ),
         
         html.Br(),
-
-        html.H4('Upload loan book:', style={'textAlign':'center'}),
-        
-        html.Br(),
         
         dbc.Row([
+            
+            dbc.Col([
+            
+                html.H5('User file input:', style={'textAlign':'right', "margin-top":"5px","padding":"10px"}),
+                
+            ], width=2),
+            
             dbc.Col(
                 [
                     dbc.Card(
                        dcc.Upload(id='upload-data', children=html.Div(['Drag and Drop or ',html.A('Select Files')]),
                                   style = red_button_style, disabled=True),
                     )
-                ], width=6
+                ], width=6 #xs=12, sm=12, md=12, lg=6, xl=6 
             ),
          ],
         justify = "center"
@@ -1006,7 +1106,7 @@ home_page_content = dbc.Container([
             [
             dbc.Col([
                 html.Div(id='output-data-upload'), # if we want to output it into a dcc.Table
-            ], width= 12), #responsive column 
+            ], width= 12), #responsive column size #xs=10, sm=10, md=10, lg=10, xl=12),
                 
             ], 
             justify = "center"
@@ -1034,11 +1134,14 @@ page_one_content = dbc.Container([
     
     html.Hr(),
         
+#     theme_changer,
+        
     dbc.Row([
         
         dbc.Col(theme_changer, align="start"),
         
         dbc.Col(dbc.Button(
+#             children = [html.I(className="fa fa-download mr-1"), "Download"],
             children = [html.I(className="fa fa-cloud-download mr-1"), "Download"],
             
             id = "btn-charts",
@@ -1050,7 +1153,7 @@ page_one_content = dbc.Container([
             className="me-md-2",
             n_clicks=0,
             style={
-                    "marginLeft": "90%",
+                    "marginLeft": "80%",
 #                     "width": "20%",
 #                     "height": "50%",
                     "fontSize": "1em",
@@ -1060,21 +1163,23 @@ page_one_content = dbc.Container([
                     "border": "4px solid dodgerblue",
                 }
         ),align="end"
+#         ),
         ),
         
         dcc.Download(id="download-charts"),
         
     ],
     
-        justify="end"
+        justify="center"
     
     ), 
         
     html.Br(),
     
-    dbc.Row([
-        dbc.Col(original_term_card, width=5, xs=8, sm=8, md=8, lg=5, xl=5),
-        dbc.Col(remaining_term_card, width=5, xs=8, sm=8, md=8, lg=5, xl=5),
+    dbc.Row(
+        [
+            dbc.Col([original_term_card], xs=12, sm=12, md=6, lg=6, xl=5),
+            dbc.Col([remaining_term_card], xs=12, sm=12, md=6, lg=6, xl=5),
         ],
         justify = "around",
         style={"height": "80"},     
@@ -1087,8 +1192,8 @@ page_one_content = dbc.Container([
     html.Br(),
         
     dbc.Row([
-        dbc.Col(seasoning_card, width=5, xs=8, sm=8, md=8, lg=5, xl=5),
-        dbc.Col(current_coupon_card, width=5, xs=8, sm=8, md=8, lg=5, xl=5),
+        dbc.Col([seasoning_card], xs=12, sm=12, md=6, lg=6, xl=5),
+        dbc.Col([current_coupon_card], xs=12, sm=12, md=6, lg=6, xl=5),
         ],
         justify = "around",
         style={"height": "80"}, 
@@ -1101,8 +1206,8 @@ page_one_content = dbc.Container([
     html.Br(),
         
     dbc.Row([
-        dbc.Col(spread_card, width=5, xs=8, sm=8, md=8, lg=5, xl=5),
-        dbc.Col(ltv_card, width=5, xs=8, sm=8, md=8, lg=5, xl=5),
+        dbc.Col([spread_card], xs=12, sm=12, md=6, lg=6, xl=5),
+        dbc.Col([ltv_card], xs=12, sm=12, md=6, lg=6, xl=5),
         ],
         justify = "around",
         style={"height": "80"}, 
@@ -1115,8 +1220,8 @@ page_one_content = dbc.Container([
     html.Br(),
         
     dbc.Row([
-        dbc.Col(original_balance_card, width=5, xs=8, sm=8, md=8, lg=5, xl=5),
-        dbc.Col(current_balance_card, width=5, xs=8, sm=8, md=8, lg=5, xl=5),
+        dbc.Col([original_balance_card], xs=12, sm=12, md=6, lg=6, xl=5),
+        dbc.Col([current_balance_card], xs=12, sm=12, md=6, lg=6, xl=5),
         ],
         justify = "around",
         style={"height": "80"}, 
@@ -1129,8 +1234,8 @@ page_one_content = dbc.Container([
     html.Br(),
         
     dbc.Row([
-        dbc.Col(region_card, width=5, xs=8, sm=8, md=8, lg=5, xl=5),
-        dbc.Col(top_loans_card, width=5, xs=8, sm=8, md=8, lg=5, xl=5),
+        dbc.Col([region_card], xs=12, sm=12, md=6, lg=6, xl=5),
+        dbc.Col([top_loans_card], xs=12, sm=12, md=6, lg=6, xl=5),
         ],
         justify = "around",
         style={"height": "80"}, 
@@ -1143,8 +1248,8 @@ page_one_content = dbc.Container([
     html.Br(),
         
     dbc.Row([
-        dbc.Col(origination_year_card, width=5, xs=8, sm=8, md=8, lg=5, xl=5),
-        dbc.Col(maturity_year_card, width=5, xs=8, sm=8, md=8, lg=5, xl=5),
+        dbc.Col([origination_year_card], xs=12, sm=12, md=6, lg=6, xl=5),
+        dbc.Col([maturity_year_card], xs=12, sm=12, md=6, lg=6, xl=5),
         ],
         justify = "around",
         style={"height": "80"}, 
@@ -1153,6 +1258,8 @@ page_one_content = dbc.Container([
     html.Br(),
         
     html.Br(),
+        
+#     html.Div(id="populate-table"),
         
     ],
     
@@ -1177,7 +1284,6 @@ page_two_content = dbc.Container([
         dbc.Col(theme_changer, align="start"),
         
         dbc.Col(dbc.Button(
-#             children = [html.I(className="fa fa-download mr-1"), "Download"],
             children = [html.I(className="fa fa-cloud-download mr-1"), "Download"],
             
             id = "btn-tables-csv",
@@ -1189,7 +1295,7 @@ page_two_content = dbc.Container([
             className="me-md-2",
             n_clicks=0,
             style={
-                    "marginLeft": "90%",
+                    "margin-left": "80%",
                     "fontSize": "1em",
                     "background-color": "white",
                     "color": "black",
@@ -1208,7 +1314,7 @@ page_two_content = dbc.Container([
 ### STRATIFICATION TABLES
 
 # 1. remaining term stratifications
-        
+    
     remaining_term_table, 
         
     html.Br(),
@@ -1273,10 +1379,97 @@ content = html.Div(id="page-content", children=[], style=CONTENT_STYLE)
 
 # controlled by a callback function => render_page_content
 # storage could be local or memory
-app.layout = html.Div([dcc.Store(id='store-info', storage_type='session'),
-                       dcc.Location(id="url"), 
-                       sidebar, 
-                       content]) 
+
+
+#app.layout = html.Div([dcc.Store(id='store-info', storage_type='session'),
+#                       dcc.Location(id="url"), 
+#                       sidebar, 
+#                       content]) 
+
+app.layout =  html.Div([
+    dcc.Store(id='store-info', storage_type='session'),
+    dcc.Location(id="url"), 
+    
+    dbc.Row([     
+            html.Div([
+                html.H1('LOAN BOOK VISUALIZER', style = {'textAlign' : 'center', 
+                                                         "margin-top":"40px",
+                                                         "margin-bottom":"30px",
+                                                         "fontWeight": "bold",
+                                                        }),    
+        ],style={"border": "5px ridge silver",  # outset, groove
+#              'box-shadow': '10px 10px 10px 10px rgba(0, 0, 0, 0.2)',
+             'background':'light grey',
+             "padding": "10px" ,
+             }),
+                
+    ], className='row sticky-top', 
+        style={'background': 'linear-gradient(to right, #b0c4de, #1e90ff)'}),
+    
+    
+    dbc.Row([
+        
+        dbc.Col([
+            
+            html.I(className="bi bi-envelope-fill me-1 text-primary text-center"),
+                    html.A("data.with.elom@gmail.com", 
+#                            href="http://linkedin.com/in/elom-tettey-kwamin-frm®-53029468",
+#                            target="_blank", 
+                           style={'text-decoration':'none', "padding": "2px", "font-weight": "bold",
+                                 "margin-right":"5px"},
+                          ),
+            
+            html.I(className="bi bi-youtube me-1 text-primary text-center"),
+                    html.A("Data with Elom", 
+                           href="https://www.youtube.com/@DatawithElom",
+                           target="_blank", 
+                           style={'text-decoration':'none', "padding": "2px", "font-weight": "bold",
+                                 "margin-right":"5px"},
+                          ),
+            
+             html.I(className="bi bi-instagram me-1 text-primary text-center"),
+                    html.A("data.with.elom", 
+                           href="http://instagram.com/data.with.elom",
+                           target="_blank", 
+                           style={'text-decoration':'none', "padding": "2px", "font-weight": "bold",
+                                  "margin-right":"5px"},
+                          ),
+            
+             html.I(className="bi bi-linkedin me-1 text-primary text-center"),
+                    html.A("Elom Kwamin, FRM", 
+                           href="http://linkedin.com/in/elom-tettey-kwamin-frm®-53029468",
+                           target="_blank", 
+                           style={'text-decoration':'none', "padding": "2px", "font-weight": "bold",
+                                 "margin-right":"5px"},
+                          ),
+            
+            
+        ],style={'text-align':"right"}),
+    ], justify="right"),
+    
+    dbc.Row([
+        dbc.Col([
+            html.Div([
+                sidebar,
+            ],
+            style={"border": "0px ridge silver",  # outset, groove
+             'background':'light grey',
+             "padding": "10px" ,
+             }),
+        ], lg={'size':2, 'offset':0}, sm=12),
+        
+        dbc.Col([
+            html.Div([
+                content,
+            ]),
+        ], lg={'size':10, 'offset':0}, sm=12)         
+    ],justify="center"),
+    
+    html.Br(),
+    
+    html.Hr(),
+      
+])
 
 
 # ### 4. callback functions 
@@ -1305,15 +1498,6 @@ def render_page_content(pathname):
     
     elif pathname == "/tables-page":
         return page_two_content
-    
-#     if pathname == "/":
-#         return home_page_content
-    
-#     elif pathname == "/page-1":
-#         return page_one_content
-    
-#     elif pathname == "/page-2":
-#         return page_two_content
 
     # If the user tries to reach a different page, return a 404 message
     return dbc.Jumbotron(
@@ -1679,7 +1863,6 @@ def update_origination_year_chart(stored_data, value):
     
     return orig_year_fig
 
-
 # >> Maturity year chart
 
 @app.callback(
@@ -2014,9 +2197,6 @@ def update_orig_term_table(jsonified_cleaned_data):
 
 if __name__ == '__main__':
     app.run_server(debug=False)
-
-
-# In[ ]:
 
 
 
