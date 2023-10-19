@@ -1422,7 +1422,7 @@ app.layout =  html.Div([
                            href="https://www.youtube.com/@DatawithElom",
                            target="_blank", 
                            style={'text-decoration':'none', "padding": "2px", "font-weight": "bold",
-                                 "margin-right":"5px"},
+                                 "margin-right":"10px"},
                           ),
             
              html.I(className="bi bi-instagram me-1 text-primary text-center"),
